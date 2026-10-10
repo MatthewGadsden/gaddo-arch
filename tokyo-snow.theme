@@ -1,0 +1,44 @@
+# shellcheck shell=bash
+#
+# tokyo-snow — terminal colour theme
+#
+# Palette sampled from the "snowy Tokyo alley" wallpaper (hypr/gruv-01.jpg):
+# warm vending-machine lights (brick -> gold), the green-tinted snowy glow
+# (sage -> pine), the snow itself, and the shadowed pavement.
+#
+# Usage (bash):
+#   source tokyo-snow.theme
+#   printf '%sHello%s\n' "$c_amber" "$c_reset"
+#
+# Provides:
+#   theme_hex[<name>]   '#rrggbb' for every colour
+#   c_<name>            24-bit ANSI foreground escape for every colour
+#   c_text, c_muted     semantic aliases (body text, rules/borders)
+#   c_bold, c_reset     style escapes
+#   theme_swatch        colour names in display order (warm -> cool)
+
+declare -gA theme_hex=(
+    [brick]='#824a3e'   # deep red in the machines' shadows
+    [neon]='#b85940'    # red KIRIN sign and machine lights
+    [ember]='#cb7d50'   # burnt-orange machine glow
+    [amber]='#d19e63'   # lit drink shelves
+    [gold]='#d5b67b'    # BOSS sign and lit panels
+    [sage]='#b9bc8f'    # snow under the green-tinted light
+    [moss]='#a2aa7f'    # mid green tint
+    [pine]='#849675'    # darkest green tones
+    [snow]='#ebe0b3'    # brightest snow — body text
+    [dim]='#797562'     # shadowed pavement — rules and borders
+)
+
+theme_swatch=(brick neon ember amber gold sage moss pine)
+
+for _name in "${!theme_hex[@]}"; do
+    _h=${theme_hex[$_name]#\#}
+    printf -v "c_$_name" '\e[38;2;%d;%d;%dm' "0x${_h:0:2}" "0x${_h:2:2}" "0x${_h:4:2}"
+done
+unset _name _h
+
+c_text=$c_snow
+c_muted=$c_dim
+c_bold=$'\e[1m'
+c_reset=$'\e[0m'

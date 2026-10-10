@@ -1,0 +1,3 @@
+1password
+claude-code
+nvidia-580xx-utils
