@@ -68,7 +68,7 @@ backup() { [[ -e $1 && ! -e $1.pre-setup ]] && mv "$1" "$1.pre-setup" || true; }
 mkdir -p "$HOME/.config"
 for src in "$REPO_DIR"/*; do
   name="$(basename "$src")"
-  case "$name" in install|home|README.md) continue ;; esac
+  case "$name" in install|home|README.md|CLAUDE.md) continue ;; esac
   backup "$HOME/.config/$name"
   rm -rf "$HOME/.config/$name"
   cp -a "$src" "$HOME/.config/$name"
