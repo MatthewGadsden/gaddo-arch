@@ -54,7 +54,14 @@ info=(
     "$swatch"
 )
 
-mapfile -t sloth < "$sloth_file"
+mapfile -t art < "$sloth_file"
+# Animated art holds several frames, separated by lines with a single form feed
+frame_starts=(0)
+for i in "${!art[@]}"; do
+    [[ ${art[i]} == $'\f' ]] && frame_starts+=($((i + 1)))
+done
+frame_h=$(( ${#frame_starts[@]} > 1 ? frame_starts[1] - 1 : ${#art[@]} ))
+sloth=("${art[@]:0:frame_h}")
 
 pad_left="      "
 gap="       "
@@ -74,3 +81,63 @@ for ((i = 0; i < rows; i++)); do
     printf '%s%s%s%s\n' "$pad_left" "${sloth[i]:-$blank_sloth}" "$gap" "$line"
 done
 printf '\n\n'
+
+# Animated art loops over the art just printed, redrawing it at its screen position.
+# From .bashrc (GREETING_PIDFILE set) it runs in the background behind the prompt and
+# .bashrc's hooks stop it on the first command; run any other way it loops in the
+# foreground until a key is pressed. Skipped unless the art fits on the terminal.
+frame_delay=0.07
+frame_col=$(( ${#pad_left} + 1 ))
+
+# Draw the frame starting at art line $1 with its top at screen row $2, cursor kept put
+draw_frame() {
+    local out=$'\e7' i
+    for ((i = 0; i < frame_h; i++)); do
+        out+=$'\e['"$(($2 + i));${frame_col}H${art[$1 + i]}"
+    done
+    printf '%s\e8' "$out"
+}
+
+# Loop the frames at screen row $1. Background: stop on SIGTERM, when the shell that
+# started us exits or when the terminal is resized (the art moves). Foreground: on a key.
+animate() {
+    local top=$1 shell_pid=$2 size=$3 tick start n=0
+    if [[ $shell_pid ]]; then
+        trap 'exit 0' TERM
+        exec {tick}<> <(:)  # never readable, so read -t on it is a plain delay
+    fi
+    while :; do
+        for start in "${frame_starts[@]:1}" 0; do
+            draw_frame "$start" "$top" || exit 0
+            if [[ $shell_pid ]]; then
+                read -rt "$frame_delay" -u "$tick" _
+                if ((++n % 7 == 0)); then
+                    kill -0 "$shell_pid" 2>/dev/null || exit 0
+                    [[ $(stty size < /dev/tty 2>/dev/null) == "$size" ]] || exit 0
+                fi
+            else
+                read -rsn1 -t "$frame_delay" _ && return
+            fi
+        done
+    done
+}
+
+if ((${#frame_starts[@]} > 1)) && [[ -t 0 && -t 1 ]]; then
+    size=$(stty size 2>/dev/null)
+    # Scroll now if the prompt would need room, so it can't move the art once measured
+    printf '\n\n\n\e[3A'
+    IFS='[;' read -rs -d R -t 1 -p $'\e[6n' _ cur_row _ 2>&1
+    top=$(( ${cur_row:-0} - rows - 2 ))
+    if ((top >= 1 && ${size%% *} > rows + 4)); then
+        if [[ $GREETING_PIDFILE ]]; then
+            animate "$top" "$PPID" "$size" < /dev/null &
+            echo "$!" > "$GREETING_PIDFILE"
+        else
+            trap 'printf "\e[?25h"' EXIT
+            printf '\e[?25l'
+            animate "$top"
+            draw_frame 0 "$top"
+            printf '\e[?25h'
+        fi
+    fi
+fi

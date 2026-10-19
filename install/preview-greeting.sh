@@ -4,6 +4,7 @@
 #
 #   install/preview-greeting.sh          # every <host>-poster.ans in the repo
 #   install/preview-greeting.sh appa     # just one
+#   install/preview-greeting.sh zuko-v2  # an alternate version, <host>-<version>-poster.ans
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -24,8 +25,10 @@ for host in "${hosts[@]}"; do
   art="$REPO_DIR/$host-poster.ans"
   [[ -f $art ]] || die "no art for '$host' ($art)"
   printf '\n==> %s\n' "$host"
-  # point the greeting at the repo copies and show the previewed hostname in its title
-  sed -e "s|~/.config/akame-poster.ans|$art|" \
-      -e "s|~/.config/tokyo-snow.theme|$REPO_DIR/tokyo-snow.theme|" \
-      "$REPO_DIR/sloth-greeting.sh" | HOSTNAME="$host" bash
+  grep -q $'^\f$' "$art" && echo "(animated: press any key to stop)"
+  # point the greeting at the repo copies and show the previewed hostname in its title;
+  # run it from a process substitution so stdin stays the terminal (animated art needs it)
+  HOSTNAME="${host%%-*}" bash <(sed -e "s|~/.config/akame-poster.ans|$art|" \
+                                    -e "s|~/.config/tokyo-snow.theme|$REPO_DIR/tokyo-snow.theme|" \
+                                    "$REPO_DIR/sloth-greeting.sh")
 done
