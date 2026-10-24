@@ -78,8 +78,8 @@ hl.config({
         border_size = 1,
 
         col = {
-            active_border = { colors = { "rgba(cb7d50ee)", "rgba(d5b67bee)" }, angle = 45 }, -- ember -> gold
-            inactive_border = "rgba(797562aa)", -- dim
+            active_border = { colors = { "rgba(db814cee)", "rgba(ecd08fee)" }, angle = 45 }, -- ember -> gold
+            inactive_border = "rgba(7d7860aa)", -- dim
         },
 
         resize_on_border = false,

@@ -10,22 +10,22 @@
     night:          #1C1C1AFF;
     shadow:         #2A2A28FF;
     slate:          #3A3933FF;
-    dim:            #797562FF;
-    snow:           #EBE0B3FF;
-    brick:          #824A3EFF;
-    neon:           #B85940FF;
-    ember:          #CB7D50FF;
-    amber:          #D19E63FF;
-    gold:           #D5B67BFF;
-    sage:           #B9BC8FFF;
-    moss:           #A2AA7FFF;
-    pine:           #849675FF;
+    dim:            #7D7860FF;
+    snow:           #F1E4B5FF;
+    brick:          #96402EFF;
+    neon:           #D5583DFF;
+    ember:          #DB814CFF;
+    amber:          #E1B568FF;
+    gold:           #ECD08FFF;
+    sage:           #C4C88EFF;
+    moss:           #A6D46CFF;
+    pine:           #6FC28AFF;
 
     /* adi1090x names, used by the stock launchers/powermenus/applets */
     background:     #1C1C1AFF;
     background-alt: #2A2A28FF;
-    foreground:     #EBE0B3FF;
-    selected:       #D19E63FF;
-    active:         #B9BC8FFF;
-    urgent:         #B85940FF;
+    foreground:     #F1E4B5FF;
+    selected:       #E1B568FF;
+    active:         #C4C88EFF;
+    urgent:         #D5583DFF;
 }

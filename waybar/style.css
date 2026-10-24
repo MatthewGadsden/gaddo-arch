@@ -2,16 +2,16 @@
 @define-color night  #1c1c1a;
 @define-color shadow #2a2a28;
 @define-color slate  #3a3933;
-@define-color dim    #797562;
-@define-color snow   #ebe0b3;
-@define-color brick  #824a3e;
-@define-color neon   #b85940;
-@define-color ember  #cb7d50;
-@define-color amber  #d19e63;
-@define-color gold   #d5b67b;
-@define-color sage   #b9bc8f;
-@define-color moss   #a2aa7f;
-@define-color pine   #849675;
+@define-color dim    #7d7860;
+@define-color snow   #f1e4b5;
+@define-color brick  #96402e;
+@define-color neon   #d5583d;
+@define-color ember  #db814c;
+@define-color amber  #e1b568;
+@define-color gold   #ecd08f;
+@define-color sage   #c4c88e;
+@define-color moss   #a6d46c;
+@define-color pine   #6fc28a;
 
 * {
     border: none;

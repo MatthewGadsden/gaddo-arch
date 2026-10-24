@@ -10,7 +10,15 @@
 #   source tokyo-snow.theme
 #   printf '%sHello%s\n' "$c_amber" "$c_reset"
 #
+# Variants — set TOKYO_SNOW_VARIANT before sourcing (oh-my-posh reads it too):
+#   lamplit-glow   (default) lamplit, with vending-glow's moss and pine
+#   lamplit        the wallpaper's own brightest pixels; subtle
+#   neon-alley     reds/oranges pushed to the sign glow; bold
+#   vending-glow   near-full saturation, deepest backgrounds; loudest
+#
 # Provides:
+#   theme_variant       the variant that was loaded
+#   theme_variants      every variant name
 #   theme_hex[<name>]   '#rrggbb' for every colour (night/shadow/slate are
 #                       background tones, used by waybar, rofi, hyprlock, nvim)
 #   c_<name>            24-bit ANSI foreground escape for every colour
@@ -18,21 +26,50 @@
 #   c_bold, c_reset     style escapes
 #   theme_swatch        colour names in display order (warm -> cool)
 
-declare -gA theme_hex=(
-    [brick]='#824a3e'   # deep red in the machines' shadows
-    [neon]='#b85940'    # red KIRIN sign and machine lights
-    [ember]='#cb7d50'   # burnt-orange machine glow
-    [amber]='#d19e63'   # lit drink shelves
-    [gold]='#d5b67b'    # BOSS sign and lit panels
-    [sage]='#b9bc8f'    # snow under the green-tinted light
-    [moss]='#a2aa7f'    # mid green tint
-    [pine]='#849675'    # darkest green tones
-    [snow]='#ebe0b3'    # brightest snow — body text
-    [dim]='#797562'     # shadowed pavement — rules and borders
-    [night]='#1c1c1a'   # deepest shadow — bar and window backgrounds
-    [shadow]='#2a2a28'  # the alley's dark walls — raised surfaces
-    [slate]='#3a3933'   # lit edges of the shadows — subtle borders, selection
-)
+theme_variants=(lamplit-glow lamplit neon-alley vending-glow)
+theme_variant=${TOKYO_SNOW_VARIANT:-lamplit-glow}
+
+# brick:  deep red in the machines' shadows     sage:   snow under the green-tinted light
+# neon:   red KIRIN sign and machine lights     moss:   mid green tint
+# ember:  burnt-orange machine glow             pine:   cold green-teal cast on the snow
+# amber:  lit drink shelves                     snow:   brightest snow — body text
+# gold:   BOSS sign and lit panels              dim:    shadowed pavement — rules and borders
+# night:  deepest shadow — bar and window backgrounds
+# shadow: the alley's dark walls — raised surfaces
+# slate:  lit edges of the shadows — subtle borders, selection
+case $theme_variant in
+    lamplit)
+        declare -gA theme_hex=(
+            [brick]='#96402e' [neon]='#d5583d' [ember]='#db814c' [amber]='#e1b568'
+            [gold]='#ecd08f'  [sage]='#c4c88e' [moss]='#acbb7f'  [pine]='#8fa877'
+            [snow]='#f1e4b5'  [dim]='#7d7860'
+            [night]='#1c1c1a' [shadow]='#2a2a28' [slate]='#3a3933'
+        ) ;;
+    neon-alley)
+        declare -gA theme_hex=(
+            [brick]='#a8341f' [neon]='#e8492b' [ember]='#f07f3c' [amber]='#f2aa4c'
+            [gold]='#f4cc72'  [sage]='#c9d48a' [moss]='#a9c46f'  [pine]='#7fae6a'
+            [snow]='#f3e6b6'  [dim]='#807a5c'
+            [night]='#1a1a17' [shadow]='#282823' [slate]='#3a382f'
+        ) ;;
+    vending-glow)
+        declare -gA theme_hex=(
+            [brick]='#b8321c' [neon]='#ff4b2b' [ember]='#ff8a3d' [amber]='#ffb547'
+            [gold]='#ffd56b'  [sage]='#d0e08a' [moss]='#a6d46c'  [pine]='#6fc28a'
+            [snow]='#fff0c2'  [dim]='#868063'
+            [night]='#161613' [shadow]='#24241f' [slate]='#36342b'
+        ) ;;
+    *)
+        [[ $theme_variant == lamplit-glow ]] ||
+            printf 'tokyo-snow: unknown variant "%s", using lamplit-glow\n' "$theme_variant" >&2
+        theme_variant=lamplit-glow
+        declare -gA theme_hex=(
+            [brick]='#96402e' [neon]='#d5583d' [ember]='#db814c' [amber]='#e1b568'
+            [gold]='#ecd08f'  [sage]='#c4c88e' [moss]='#a6d46c'  [pine]='#6fc28a'
+            [snow]='#f1e4b5'  [dim]='#7d7860'
+            [night]='#1c1c1a' [shadow]='#2a2a28' [slate]='#3a3933'
+        ) ;;
+esac
 
 theme_swatch=(brick neon ember amber gold sage moss pine)
 
