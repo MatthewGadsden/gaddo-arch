@@ -6,6 +6,22 @@
  **/
 
 * {
+    /* full palette, for themes written for tokyo-snow */
+    night:          #1C1C1AFF;
+    shadow:         #2A2A28FF;
+    slate:          #3A3933FF;
+    dim:            #797562FF;
+    snow:           #EBE0B3FF;
+    brick:          #824A3EFF;
+    neon:           #B85940FF;
+    ember:          #CB7D50FF;
+    amber:          #D19E63FF;
+    gold:           #D5B67BFF;
+    sage:           #B9BC8FFF;
+    moss:           #A2AA7FFF;
+    pine:           #849675FF;
+
+    /* adi1090x names, used by the stock launchers/powermenus/applets */
     background:     #1C1C1AFF;
     background-alt: #2A2A28FF;
     foreground:     #EBE0B3FF;
