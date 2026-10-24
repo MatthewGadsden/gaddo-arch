@@ -12,6 +12,13 @@ PS1='[\u@\h \W]\$ '
 
 export PATH=$PATH:/home/gaddo/.local/bin
 
+[[ -f /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+# grimshot saves screenshots here
+export XDG_PICTURES_DIR=~/Pictures/screenshots/
+export XDG_SCREENSHOTS_DIR=~/Pictures/screenshots/
+
 eval "$(oh-my-posh init bash)"
 eval "$(oh-my-posh init bash --config ~/.config/gaddo-omp-prompt.json)"
 

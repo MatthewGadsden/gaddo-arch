@@ -3,6 +3,7 @@ base
 base-devel
 brightnessctl
 darktable
+discord
 dkms
 dolphin
 dunst
@@ -33,6 +34,7 @@ nano
 neovim
 network-manager-applet
 networkmanager
+nvm
 otf-aurulent-nerd
 otf-codenewroman-nerd
 otf-comicshanns-nerd
@@ -59,6 +61,8 @@ sddm
 slurp
 smartmontools
 sof-firmware
+spotify-launcher
+sway-contrib
 ttf-0xproto-nerd
 ttf-3270-nerd
 ttf-agave-nerd

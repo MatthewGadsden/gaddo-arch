@@ -28,7 +28,7 @@ for host in "${hosts[@]}"; do
   grep -q $'^\f$' "$art" && echo "(animated: press any key to stop)"
   # point the greeting at the repo copies and show the previewed hostname in its title;
   # run it from a process substitution so stdin stays the terminal (animated art needs it)
-  HOSTNAME="${host%%-*}" bash <(sed -e "s|~/.config/akame-poster.ans|$art|" \
+  HOSTNAME="${host%%-*}" bash <(sed -e "s|^sloth_file=.*|sloth_file=$art|" \
                                     -e "s|~/.config/tokyo-snow.theme|$REPO_DIR/tokyo-snow.theme|" \
                                     "$REPO_DIR/sloth-greeting.sh")
 done

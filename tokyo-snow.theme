@@ -11,7 +11,8 @@
 #   printf '%sHello%s\n' "$c_amber" "$c_reset"
 #
 # Provides:
-#   theme_hex[<name>]   '#rrggbb' for every colour
+#   theme_hex[<name>]   '#rrggbb' for every colour (night/shadow/slate are
+#                       background tones, used by waybar, rofi, hyprlock, nvim)
 #   c_<name>            24-bit ANSI foreground escape for every colour
 #   c_text, c_muted     semantic aliases (body text, rules/borders)
 #   c_bold, c_reset     style escapes
@@ -28,6 +29,9 @@ declare -gA theme_hex=(
     [pine]='#849675'    # darkest green tones
     [snow]='#ebe0b3'    # brightest snow — body text
     [dim]='#797562'     # shadowed pavement — rules and borders
+    [night]='#1c1c1a'   # deepest shadow — bar and window backgrounds
+    [shadow]='#2a2a28'  # the alley's dark walls — raised surfaces
+    [slate]='#3a3933'   # lit edges of the shadows — subtle borders, selection
 )
 
 theme_swatch=(brick neon ember amber gold sage moss pine)

@@ -29,15 +29,20 @@ hl.monitor({
     scale = 1.5,
 })
 
+-- External monitors are matched by model, not port: the connector names differ
+-- between machines. The Dell sits on the left, the 144Hz AOC on the right.
+local left_monitor = "desc:Dell Inc. DELL U2721DE B4NRS83"
+local right_monitor = "desc:AOC Q27G2SG4B+ OGJMAHA016182"
+
 hl.monitor({
-    output = "DP-3",
+    output = left_monitor,
     mode = "2560x1440@60",
     position = "0x0",
     scale = 1,
 })
 
 hl.monitor({
-    output = "DP-2",
+    output = right_monitor,
     mode = "2560x1440@144",
     position = "2560x0",
     scale = 1,
@@ -53,6 +58,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hyprlock")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("1password --silent")
+    -- Use the desktop's front-panel mic jack (a no-op where that source doesn't exist)
+    hl.exec_cmd("pactl set-source-port alsa_input.pci-0000_00_1f.3.analog-stereo analog-input-front-mic")
     -- Workspaces 1-6 are bound to the external monitors, so the laptop screen
     -- would otherwise boot onto the first unbound workspace (7)
     hl.dispatch(hl.dsp.focus({ workspace = 1 }))
@@ -62,16 +69,17 @@ end)
 -- LOOK AND FEEL
 -- ============================================================================
 
+-- Colours are the tokyo-snow palette (~/.config/tokyo-snow.theme)
 hl.config({
     general = {
-        gaps_in = 3,
-        gaps_out = 10,
+        gaps_in = 1,
+        gaps_out = 4,
 
-        border_size = 2,
+        border_size = 1,
 
         col = {
-            active_border = { colors = { "rgba(d65d0eee)" }, angle = 45 },
-            inactive_border = "rgba(a89984aa)",
+            active_border = { colors = { "rgba(cb7d50ee)", "rgba(d5b67bee)" }, angle = 45 }, -- ember -> gold
+            inactive_border = "rgba(797562aa)", -- dim
         },
 
         resize_on_border = false,
@@ -91,7 +99,7 @@ hl.config({
             enabled = true,
             range = 4,
             render_power = 3,
-            color = "rgba(1a1a1aee)",
+            color = "rgba(1c1c1aee)", -- night
         },
 
         blur = {
@@ -115,8 +123,8 @@ hl.config({
     },
 
     misc = {
-        force_default_wallpaper = -1,
-        disable_hyprland_logo = false,
+        force_default_wallpaper = 0,
+        disable_hyprland_logo = true,
     },
 })
 
@@ -160,7 +168,8 @@ hl.config({
         kb_rules = "",
 
         follow_mouse = 1,
-        sensitivity = 0,
+        sensitivity = -0.6,
+        accel_profile = "flat",
 
         touchpad = {
             natural_scroll = true,
@@ -170,7 +179,7 @@ hl.config({
 
 hl.device({
     name = "logitech-usb-receiver",
-    sensitivity = 1,
+    sensitivity = -0.7,
 })
 
 -- Three-finger horizontal swipe switches workspaces
@@ -214,12 +223,15 @@ hl.window_rule({
 -- WORKSPACES
 -- ============================================================================
 
+-- Pinned by port name, not model like the monitor rules above: waybar only shows
+-- a persistent workspace when the rule's monitor equals its output name exactly.
+-- These are the desktop's ports (AOC on DP-1 on the right, Dell on DP-2 on the left).
 for _, ws in ipairs({ "1", "2", "3" }) do
-    hl.workspace_rule({ workspace = ws, monitor = "DP-2" })
+    hl.workspace_rule({ workspace = ws, monitor = "DP-1", persistent = true })
 end
 
 for _, ws in ipairs({ "4", "5", "6" }) do
-    hl.workspace_rule({ workspace = ws, monitor = "DP-3" })
+    hl.workspace_rule({ workspace = ws, monitor = "DP-2", persistent = true })
 end
 
 -- ============================================================================
@@ -233,7 +245,12 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 
 hl.bind(mainMod .. " + CTRL + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd("firefox"))
-hl.bind("CTRL + ALT + SHIFT + S", hl.dsp.exec_cmd("1password"))
+hl.bind(mainMod .. " + CTRL + X", hl.dsp.exec_cmd("1password"))
+hl.bind(mainMod .. " + CTRL + D", hl.dsp.exec_cmd("discord"))
+hl.bind(mainMod .. " + CTRL + S", hl.dsp.exec_cmd("spotify-launcher"))
+hl.bind(mainMod .. " + CTRL + N", hl.dsp.exec_cmd(terminal .. " -e nvim"))
+hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("grimshot --notify save area"))
+hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-4/launcher.sh"))
 
 -- Window management
 hl.bind(mainMod .. " + C", hl.dsp.window.close())

@@ -1,0 +1,15 @@
+/**
+ *
+ * tokyo-snow
+ * Palette: ~/.config/tokyo-snow.theme (sampled from hypr/gruv-01.jpg)
+ *
+ **/
+
+* {
+    background:     #1C1C1AFF;
+    background-alt: #2A2A28FF;
+    foreground:     #EBE0B3FF;
+    selected:       #D19E63FF;
+    active:         #B9BC8FFF;
+    urgent:         #B85940FF;
+}
