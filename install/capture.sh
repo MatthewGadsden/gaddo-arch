@@ -10,7 +10,7 @@ HERE="$REPO_DIR/install"
 CONFIG_ITEMS=(
   hypr nvim waybar kitty rofi
   gaddo-omp-prompt.json sloth-greeting.sh tokyo-snow.theme mimeapps.list
-  sloth.ans akame.ans akame-color.ans akame-outline.ans akame-poster.ans zuko-v2-poster.ans
+  sloth.ans akame.ans akame-color.ans akame-outline.ans akame-poster.ans zuko-v2-poster.ans david-poster.ans
 )
 # ~ entries to track (copied to repo/home)
 HOME_ITEMS=(.bashrc .bash_profile .gitconfig)
