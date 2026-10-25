@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Block commits that stage secrets. capture.sh copies whole config dirs and dotfiles,
+# so a token added to ~/.bashrc or ~/.config would otherwise get pushed.
+# Enabled by 02-post.sh (git config core.hooksPath .githooks). Bypass a false
+# positive with `git commit --no-verify`, or add it to .gitleaksignore.
+set -euo pipefail
+
+if ! command -v gitleaks >/dev/null; then
+  echo "pre-commit: gitleaks is not installed (sudo pacman -S gitleaks); refusing to commit." >&2
+  echo "pre-commit: use 'git commit --no-verify' to skip the secret scan." >&2
+  exit 1
+fi
+
+exec gitleaks git --pre-commit --staged --redact --no-banner --verbose

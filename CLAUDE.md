@@ -18,6 +18,8 @@ Consequences:
 - Any new top-level file in the repo root gets deployed to `~/.config/` unless you add it to the exclusion list in `02-post.sh`.
 - To track a new config, add it to `CONFIG_ITEMS` / `HOME_ITEMS` in `capture.sh`; nothing else needs to change for it to deploy.
 
+Commits go through `.githooks/pre-commit` (gitleaks on staged changes; `02-post.sh` sets `core.hooksPath`). The repo is public, so never commit secrets; dot-prefixed root entries like `.githooks` aren't matched by `02-post.sh`'s `*` glob and so aren't deployed.
+
 `install/01-base.sh` runs as root from the Arch ISO and **wipes the chosen disk** (1G EFI, `ROOT_SIZE` ext4 root (default 47G), ext4 `/home`), installs the base system and GRUB, and clones this repo to `~/source/gaddo-arch`. `02-post.sh` runs after first boot as the normal user and is meant to be safe to re-run. Do not run either script on this machine to test a change; per the README, test install-script changes in a VM.
 
 Hardware-specific settings live in the scripts, not the configs: GRUB kernel parameters in `01-base.sh`, the NVIDIA `MODULES`/`HOOKS` written into `mkinitcpio.conf` and the NVIDIA suspend services in `02-post.sh`, and `nvidia-580xx-utils` in `aurlist.txt`.

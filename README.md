@@ -67,6 +67,12 @@ git commit -am "chore: sync" && git push
 `capture.sh` regenerates the package lists and copies the tracked configs. To track another
 `~/.config` entry or home dotfile, add it to `CONFIG_ITEMS` / `HOME_ITEMS` in the script.
 
+The repo is public, so a pre-commit hook (`.githooks/pre-commit`) runs
+[gitleaks](https://github.com/gitleaks/gitleaks) on staged changes and blocks the commit if
+it finds a secret. `02-post.sh` enables it; on an existing clone run
+`git config core.hooksPath .githooks`. Keep secrets out of tracked files (e.g. in an
+untracked `~/.bashrc.local`).
+
 ## Layout
 
 | Path | Deployed to |

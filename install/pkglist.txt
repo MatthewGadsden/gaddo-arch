@@ -11,6 +11,7 @@ efibootmgr
 firefox
 gedit
 git
+gitleaks
 grim
 grub
 gst-plugin-pipewire

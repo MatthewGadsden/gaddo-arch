@@ -80,6 +80,9 @@ for src in "$REPO_DIR"/home/.[!.]*; do
   cp -a "$src" "$HOME/$name"
 done
 
+# scan staged changes for secrets before every commit (needs gitleaks from pkglist)
+git -C "$REPO_DIR" config core.hooksPath .githooks
+
 for url in "${EXTRA_REPOS[@]}"; do
   dest="$HOME/source/$(basename "$url" .git)"
   [[ -d $dest ]] || git clone "$url" "$dest"
