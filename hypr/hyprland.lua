@@ -252,6 +252,46 @@ hl.bind(mainMod .. " + CTRL + N", hl.dsp.exec_cmd(terminal .. " -e nvim"))
 hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("grimshot --notify save area"))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-4/launcher.sh"))
 
+-- Three-terminal layout on the current workspace: wide terminal on top, two
+-- below, all in ~. Each terminal launches only after the previous one opens,
+-- so the dwindle splits land the same way every time.
+hl.bind(mainMod .. " + SHIFT + A", function()
+    local active = hl.get_active_workspace()
+    if not active then return end
+    local ws = active.id
+    if #hl.get_workspace_windows(ws) > 0 then
+        hl.notification.create({ text = "Workspace " .. ws .. " isn't empty, skipping layout", timeout = 3000 })
+        return
+    end
+
+    local home = terminal .. " --working-directory " .. os.getenv("HOME")
+    local cmds = { home, home, home }
+    local opened, top, sub = 0, nil, nil
+    sub = hl.on("window.open", function(w)
+        if not (w.workspace and w.workspace.id == ws) then return end
+        opened = opened + 1
+        -- Preselect the split side so it doesn't depend on the cursor position
+        hl.dispatch(hl.dsp.focus({ window = "address:" .. w.address }))
+        if opened == 1 then
+            top = w.address
+            hl.dispatch(hl.dsp.layout("preselect d"))
+        elseif opened == 2 then
+            hl.dispatch(hl.dsp.layout("preselect l"))
+        end
+        if opened < #cmds then
+            hl.exec_cmd(cmds[opened + 1], { workspace = tostring(ws) })
+        else
+            sub:remove()
+            hl.dispatch(hl.dsp.focus({ window = "address:" .. top }))
+            hl.dispatch(hl.dsp.layout("splitratio 1.35 exact"))
+        end
+    end)
+    -- Stop listening if a launch fails, so later windows aren't hijacked
+    hl.timer(function() if sub:is_active() then sub:remove() end end, { timeout = 10000, type = "oneshot" })
+
+    hl.exec_cmd(cmds[1], { workspace = tostring(ws) })
+end)
+
 -- Window management
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exit())

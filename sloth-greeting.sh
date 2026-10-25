@@ -2,6 +2,7 @@
 # Startup greeting: art on the left, system info on the right.
 
 sloth_file=~/.config/david-poster.ans
+
 [[ -f $sloth_file ]] || return 0 2>/dev/null || exit 0
 
 theme_file=~/.config/tokyo-snow.theme

@@ -55,3 +55,6 @@ if [[ -s $__greeting_pidfile ]]; then
     bind '"\e[991~": clear-screen'
     bind '"\C-l": "\e[990~\e[991~"'
 fi
+
+# Binaries installed with `cargo install` (e.g. sqlx-cli)
+export PATH="$HOME/.cargo/bin:$PATH"

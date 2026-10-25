@@ -59,6 +59,7 @@ mainbox {
 /* the lit vending machines from the wallpaper (hypr/gruv-01.jpg) */
 imagebox {
     width:                       232px;
+    expand:                      false;
     border:                      0px 1px 0px 0px;
     border-color:                @slate;
     background-image:            url("~/.config/rofi/images/tokyo-snow.jpg", height);
