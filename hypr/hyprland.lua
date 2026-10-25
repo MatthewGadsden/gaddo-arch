@@ -250,6 +250,7 @@ hl.bind(mainMod .. " + CTRL + D", hl.dsp.exec_cmd("discord"))
 hl.bind(mainMod .. " + CTRL + S", hl.dsp.exec_cmd("spotify-launcher"))
 hl.bind(mainMod .. " + CTRL + N", hl.dsp.exec_cmd(terminal .. " -e nvim"))
 hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("grimshot --notify save area"))
+hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("~/.config/rofi/launchers/type-4/launcher.sh"))
 
 -- Three-terminal layout on the current workspace: wide terminal on top, two

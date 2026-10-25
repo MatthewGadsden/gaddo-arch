@@ -62,6 +62,7 @@ slurp
 smartmontools
 sof-firmware
 spotify-launcher
+swappy
 sway-contrib
 ttf-0xproto-nerd
 ttf-3270-nerd
